@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import React from 'react';
 import TableRow from './TableRow';
 
-const Table = ({data}) => {
+const Table = ({ data, handleEdit }) => {
 	return (
 		<div>
 			<table>
@@ -13,16 +13,20 @@ const Table = ({data}) => {
 						<th>phone</th>
 						<th>hungry</th>
 						<th>photo</th>
+						<th>edit?</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					{data && data.map(el => <TableRow 
+					{data && data.map(el => <TableRow
 						name={el.name}
 						email={el.email}
 						phone={el.phone}
+						hungry={el.hungry}
 						photo={el.photo}
 						key={el.id}
+						id={el.id}
+						handleEdit={handleEdit}
 					/>
 					)}
 				</tbody>

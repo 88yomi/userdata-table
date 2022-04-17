@@ -1,20 +1,14 @@
 import React from 'react'
 import FormInput from './FormInput';
 
-const Form = ({ handleSubmit }) => {
+const Form = ({ handleSubmit, type }) => {
 	return (
-		<form onSubmit={handleSubmit}>
-			{/* <FormInput name='full name' />
-			<FormInput name='email' type='email' />
+		<form onSubmit={handleSubmit} id={type}>
+			<FormInput name='name' />
+			<FormInput name='email' type={/*email*/ 'text'}/>
 			<FormInput name='phone' />
-			<FormInput name='hungry' />
-			<FormInput name='photo' type='file' /> */}
-			<FormInput name='full name' />
-			<FormInput name='email' />
-			<FormInput name='phone' />
-			<FormInput name='hungry' />
-			<input type='file'/>
-			{/* <FormInput name='photo' type='file' /> */}
+			<FormInput name='hungry' type="checkbox"/>
+			<FormInput name='photo' type='file' />
 			<button>submit</button>
 		</form>
 	)

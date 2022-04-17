@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
@@ -7,26 +7,76 @@ import Form from './components/Form';
 import Header from './components/Header';
 import Table from './components/Table';
 
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { storage } from './firebase/config';
+import getImageUrl from './firebase/getImageUrl';
 
 function App() {
   const [submitData, setSubmitData] = useState([]);
+  const [editing, setEditing] = useState({ status: false, id: '' });
 
-  const uploadImage = (image) => {
-    return new Promise((resolve, reject) => {
-      const storageRef = ref(storage, `images/${image.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, image);
+  useEffect(() => {
+    const mostPropsArray = ['name', 'email', 'phone', 'photo'];
 
-      uploadTask.on('state_changed', () => { },
-        (error) => {
-          reject(error)
-          console.log(error);
-        },
-        () => {
-          resolve(getDownloadURL(uploadTask.snapshot.ref));
+    const populateEdit = () => {
+      const dataEntry = submitData.filter(item => item.id === editing.id)[0];
+
+      for (let prop in dataEntry) {
+        document.querySelectorAll('form#edit-form input').forEach(elem => {
+          
+          if (dataEntry[prop] && mostPropsArray.includes(prop) && elem.name === prop) elem.value = dataEntry[prop];
+          
+          else if (dataEntry[prop] && prop === 'hungry') {
+            elem.checked = true;
+          }
         })
-    })
+      }
+    }
+
+    // necessary?
+    const clearEdit = () => {
+      document.querySelectorAll('form#edit-form input').forEach(elem => {
+        if (elem.value) elem.value = null;
+        else if (elem.checked) elem.checked = false;
+      })
+    }
+
+    if (editing.status) populateEdit();
+    if (!editing.status) clearEdit();
+
+  }, [editing.status]);
+
+  const handleEdit = (e) => {
+    const id = e.target.parentElement.parentElement.id;
+    setEditing({ ...editing, id, status: !editing.status });
+  }
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+
+    const rawFormData = {
+      name: e.target[0].value,
+      email: e.target[1].value,
+      phone: e.target[2].value,
+      hungry: e.target[3].checked,
+      photo: e.target[4].files[0],
+    };
+
+    for (let key in rawFormData) {
+      if (!rawFormData[key]) delete rawFormData[key];
+    }
+
+    document.querySelectorAll('input').forEach(elem => elem.checked ? elem.checked = false : elem.value = '');
+
+    if (rawFormData.photo) {
+      getImageUrl(rawFormData.photo)
+        .then(imgUrl => {
+          const newDataWithImage = { ...rawFormData, photo: imgUrl }
+          setSubmitData(submitData => submitData.map(item => item.id === editing.id ? { ...item, ...newDataWithImage } : item));
+        })
+    }
+    else {
+      setSubmitData(submitData => submitData.map(item => item.id === editing.id ? { ...item, ...rawFormData } : item));
+    }
+    setEditing({ status: false, id: '' })
   }
 
   const handleFormSubmit = (e) => {
@@ -36,15 +86,24 @@ function App() {
       name: e.target[0].value,
       email: e.target[1].value,
       phone: e.target[2].value,
-      hungry: e.target[3].value,
+      hungry: e.target[3].checked,
       photo: e.target[4].files[0],
+      id: nanoid(10)
     }
 
-    document.querySelectorAll('input').forEach(elem => elem.value = '');
-    uploadImage(rawFormData.photo)
-      .then(imgLink => {
-        const newData = { ...rawFormData, photo: imgLink }
+    document.querySelectorAll('input').forEach(elem => elem.checked ? elem.checked = false : elem.value = '');
+
+    getImageUrl(rawFormData.photo)
+      .then(imgUrl => {
+        const newData = { ...rawFormData, photo: imgUrl }
         setSubmitData(submitData => [...submitData, newData]);
+      })
+      .catch(err => {
+        // delete this catch part sha
+        const newData = { ...rawFormData }
+        setSubmitData(submitData => [...submitData, newData]);
+        console.log('photo not provided tho')
+
       })
   }
 
@@ -63,17 +122,20 @@ function App() {
       <button onClick={switchView}>
         Switch
       </button>
+      {editing.status && <Form handleSubmit={handleEditSubmit} type='edit-form' />}
       <Routes>
         <Route path='/'
           element={
             <Form
               handleSubmit={handleFormSubmit}
+              type='main-form'
             />}
         />
         <Route path='table'
           element={
             <Table
               data={submitData}
+              handleEdit={handleEdit}
             />}
         />
       </Routes>

@@ -10,7 +10,7 @@ const FormInput = ({ name, type }) => {
 		<label htmlFor={name}>
 			{name}
 			<input
-				// type={type ? type : 'text'}
+				type={type ? type : 'text'}
 				name={name}
 				onInput={name === 'phone' ? isKeyNumber : undefined}
 				// required
