@@ -5,5 +5,206 @@
 }
 
 body {
-font-family: serif;
+  font-family: "Public Sans", serif;
+  background: #eee;
+  color: rgb(17, 24, 39);
+}
+
+@keyframes bling {
+  0% {
+    outline: 2px solid red;
+  }
+  50% {
+    outline: none;
+  }
+  100% {
+    outline: 2px solid red;
+  }
+}
+
+.blink {
+  animation: bling 0.5s step-start infinite;
+}
+
+.wrapper {
+  width: 960px;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+header {
+  margin-bottom: 0.5rem;
+
+  h1 {
+    font-family: "Luckiest Guy", serif;
+    font-weight: 700;
+    text-align: center;
+    text-align: left;
+    margin-top: 2rem;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    color: #4f8073;
+    // color: #595272;
+  }
+
+  p {
+    padding-left: 1rem;
+  }
+}
+
+button.switch {
+  height: 1.6rem;
+  padding: 3px 5px;
+  border-radius: 7px;
+  border: 1px solid #bbb;
+  text-transform: capitalize;
+  margin-left: 50%;
+  margin-bottom: 1rem;
+  transform: translateX(-50%);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  width: 100%;
+}
+
+form#main-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 80vw;
+  height: 40rem;
+  max-height: 80vh;
+  margin: 0 auto;
+  padding: 3rem 5rem;
+  background-color: rgba(201, 18, 170, 0.6);
+  border-radius: 15px;
+  box-shadow: 5px 6px 13px rgba(0, 0, 0, 0.3);
+  position: relative;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    text-transform: capitalize;
+    font-weight: 600;
+
+    & > span {
+      font-weight: 400;
+      text-transform: lowercase;
+      font-style: italic;
+    }
+
+    // checkbox input
+    &:nth-child(4) {
+      flex-direction: row;
+    }
+
+    // photo input
+    &:nth-child(5) {
+      border: 1px solid #ccc;
+      display: inline-block;
+      background-color: #ccc;
+      border-radius: 5px;
+      padding: 6px 12px;
+      cursor: pointer;
+      visibility: inherit;
+    }
+
+    input {
+      height: 1.8rem;
+      border-radius: 5px;
+      border: none;
+      margin-top: 0.4rem;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+
+      &[type="checkbox"] {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-left: 4rem;
+      }
+
+      &[type="file"] {
+        background-color: #222;
+        height: 0;
+        width: 0;
+        position: absolute;
+        left: -20000%;
+      }
+    }
+  }
+
+  button {
+    height: 2rem;
+    width: 5rem;
+    margin: 0 auto;
+    text-transform: capitalize;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+}
+
+// image caption
+form > span {
+  position: absolute;
+  bottom: 17%;
+  width: 20rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table {
+  border-collapse: collapse;
+  border: 3px solid black;
+  margin: 0 auto;
+  width: 100%;
+
+  td,
+  th {
+    border: 1px solid black;
+    padding: 3px;
+  }
+
+  th {
+    text-transform: capitalize;
+    text-align: left;
+
+    // hungry header
+    &:nth-child(4) {
+      width: 4rem;
+    }
+// photo header
+    &:nth-child(5) {
+      width: 110px;
+    }
+    // edit
+    &:nth-child(6) {
+      width: 4rem;
+    }
+  }
+
+  td {
+    text-align: center;
+
+    &:nth-child(5) {
+      padding: 5px;
+    }
+
+    & img {
+      object-fit: cover;
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  tfoot td {
+    text-align: center;
+    font-style: italic;
+  }
+
+  caption {
+    margin-bottom: 0.5rem;
+  }
 }

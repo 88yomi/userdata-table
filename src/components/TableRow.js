@@ -7,7 +7,9 @@ const TableRow = ({ name, email, phone, hungry, photo, id, handleEdit }) => {
 			<td>{email}</td>
 			<td>{phone}</td>
 			<td>{hungry ? '✅' : '❌'}</td>
-			<td>{photo}</td>
+			<td>
+			<img src={photo} alt='user-photo'/>
+			</td>
 			<td><button onClick={handleEdit}>edit</button></td>
 			
 		</tr>

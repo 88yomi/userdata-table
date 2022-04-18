@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import React from 'react';
 import TableRow from './TableRow';
 
@@ -33,7 +32,7 @@ const Table = ({ data, handleEdit }) => {
 
 				<tfoot>
 					<tr>
-						<td rowSpan={4}>schweg</td>
+						<td colSpan={6}>Data, collected by the collector</td>
 					</tr>
 				</tfoot>
 				<caption>A table of things</caption>

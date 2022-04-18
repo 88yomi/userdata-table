@@ -14,16 +14,17 @@ function App() {
   const [editing, setEditing] = useState({ status: false, id: '' });
 
   useEffect(() => {
-    const mostPropsArray = ['name', 'email', 'phone', 'photo'];
+    const mostPropsArray = ['name', 'email', 'phone'];
 
     const populateEdit = () => {
       const dataEntry = submitData.filter(item => item.id === editing.id)[0];
 
       for (let prop in dataEntry) {
         document.querySelectorAll('form#edit-form input').forEach(elem => {
-          
+          elem.removeAttribute('required');
+
           if (dataEntry[prop] && mostPropsArray.includes(prop) && elem.name === prop) elem.value = dataEntry[prop];
-          
+
           else if (dataEntry[prop] && prop === 'hungry') {
             elem.checked = true;
           }
@@ -61,7 +62,7 @@ function App() {
     };
 
     for (let key in rawFormData) {
-      if (!rawFormData[key]) delete rawFormData[key];
+      if (!rawFormData[key] && key === 'photo') delete rawFormData[key];
     }
 
     document.querySelectorAll('input').forEach(elem => elem.checked ? elem.checked = false : elem.value = '');
@@ -79,7 +80,7 @@ function App() {
     setEditing({ status: false, id: '' })
   }
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     const rawFormData = {
@@ -92,19 +93,20 @@ function App() {
     }
 
     document.querySelectorAll('input').forEach(elem => elem.checked ? elem.checked = false : elem.value = '');
+    // reset the caption
+    document.querySelector('form > span').textContent = '';
+    
 
-    getImageUrl(rawFormData.photo)
-      .then(imgUrl => {
-        const newData = { ...rawFormData, photo: imgUrl }
-        setSubmitData(submitData => [...submitData, newData]);
-      })
-      .catch(err => {
-        // delete this catch part sha
+    try{
+      const imgUrl = await getImageUrl(rawFormData.photo)
+      const newData = { ...rawFormData, photo: imgUrl }
+      setSubmitData(submitData => [...submitData, newData]);
+    }
+    catch(err) {
         const newData = { ...rawFormData }
         setSubmitData(submitData => [...submitData, newData]);
         console.log('photo not provided tho')
-
-      })
+    }
   }
 
   // Routing
@@ -119,10 +121,11 @@ function App() {
     <div className="wrapper">
       <Header />
       {/* change this button to a one liner and use ::after to add the text */}
-      <button onClick={switchView}>
-        Switch
+      <button className='switch' onClick={switchView}>
+        Switch View
       </button>
       {editing.status && <Form handleSubmit={handleEditSubmit} type='edit-form' />}
+      <div className="content">
       <Routes>
         <Route path='/'
           element={
@@ -139,6 +142,7 @@ function App() {
             />}
         />
       </Routes>
+      </div>
     </div>
   );
 }
