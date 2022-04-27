@@ -2,9 +2,10 @@ import React from 'react'
 import FormInput from './FormInput';
 
 const Form = ({ handleSubmit, type }) => {
-	const handleNoImage = () => {
+	const handleNoImageSelected = () => {
 		let file = document.querySelector('input[type=file]');
-		
+
+		// console.log(fix this error message)
 		if (!file.files[0]) {
 			document.querySelector('label:nth-child(5)').classList.add('blink');
 			setTimeout(() => {
@@ -21,7 +22,7 @@ const Form = ({ handleSubmit, type }) => {
 			<FormInput name='hungry' type="checkbox" />
 			<FormInput name='photo' type='file' />
 			<span></span>
-			<button onClick={handleNoImage}>submit</button>
+			<button onClick={handleNoImageSelected}>submit</button>
 		</form>
 	)
 }

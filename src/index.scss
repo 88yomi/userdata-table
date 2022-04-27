@@ -8,6 +8,8 @@ body {
   font-family: "Public Sans", serif;
   background: #eee;
   color: rgb(17, 24, 39);
+  height: 100%;
+  min-height: 100vh;
 }
 
 @keyframes bling {
@@ -26,53 +28,10 @@ body {
   animation: bling 0.5s step-start infinite;
 }
 
-.wrapper {
-  width: 960px;
-  max-width: 90vw;
-  margin: 0 auto;
-}
-
-header {
-  margin-bottom: 0.5rem;
-
-  h1 {
-    font-family: "Luckiest Guy", serif;
-    font-weight: 700;
-    text-align: center;
-    text-align: left;
-    margin-top: 2rem;
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    color: #4f8073;
-    // color: #595272;
-  }
-
-  p {
-    padding-left: 1rem;
-  }
-}
-
-button.switch {
-  height: 1.6rem;
-  padding: 3px 5px;
-  border-radius: 7px;
-  border: 1px solid #bbb;
-  text-transform: capitalize;
-  margin-left: 50%;
-  margin-bottom: 1rem;
-  transform: translateX(-50%);
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
-}
-
-.content {
-  width: 100%;
-}
-
-form#main-form {
+@mixin form-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 80%;
   max-width: 80vw;
   height: 40rem;
   max-height: 80vh;
@@ -143,6 +102,62 @@ form#main-form {
     border-radius: 5px;
     border: 1px solid #ccc;
   }
+
+    @media (min-width: 800px) {
+    width: 80%;
+  }
+
+  @media (max-width: 600px) {
+    padding: 3rem;
+  }
+
+}
+
+.wrapper {
+  width: 960px;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+header {
+  margin-bottom: 0.5rem;
+
+  h1 {
+    font-family: "Luckiest Guy", serif;
+    font-weight: 700;
+    text-align: left;
+    padding-top: 2rem;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    color: #4f8073;
+    // color: #595272;
+  }
+
+  p {
+    padding-left: 1rem;
+  }
+}
+
+button.switch {
+  height: 1.6rem;
+  padding: 3px 5px;
+  border-radius: 7px;
+  border: 1px solid #bbb;
+  text-transform: capitalize;
+  margin-left: 50%;
+  margin-bottom: 1rem;
+  transform: translateX(-50%);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  width: 100%;
+  min-height: 60vh;
+  position: relative;
+}
+
+form#main-form {
+  @include form-content;
 }
 
 // image caption
@@ -153,6 +168,39 @@ form > span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+div.modal {
+  background: #354B45;
+  position: absolute;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+}
+
+form#edit-form {
+  // position: absolute;
+  @include form-content;
+
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 200;
+  height: 100%;
+  padding: 1rem;
+  background: none !important;
+  box-shadow: none;
+  padding-top: 2rem;
+
+  label {
+    color: #eee;
+
+    &:nth-child(5) {
+      color: #444;
+    }
+  }
 }
 
 table {
@@ -174,14 +222,16 @@ table {
     // hungry header
     &:nth-child(4) {
       width: 4rem;
-    }
-// photo header
-    &:nth-child(5) {
-      width: 110px;
-    }
-    // edit
-    &:nth-child(6) {
-      width: 4rem;
+
+      // photo header
+      &:nth-child(5) {
+        width: 110px;
+      }
+
+      // edit
+      &:nth-child(6) {
+        width: 4rem;
+      }
     }
   }
 

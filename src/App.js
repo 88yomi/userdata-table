@@ -9,11 +9,37 @@ import Table from './components/Table';
 
 import getImageUrl from './firebase/getImageUrl';
 
+const testData = [{
+  id: 323431,
+  name: 'name',
+  email: 'email',
+  hungry: true
+}]
+
 function App() {
-  const [submitData, setSubmitData] = useState([]);
+  // const [submitData, setSubmitData] = useState([]);
+  const [submitData, setSubmitData] = useState(testData);
+
   const [editing, setEditing] = useState({ status: false, id: '' });
 
+  // useEffect(() => navigate('table'), []);
+
+  // to remove the form edit if another part of the screen is clicked
   useEffect(() => {
+    document.querySelector('body').addEventListener('click', (e) => {
+      if (document.querySelector('form#edit-form') && !document.querySelector('form#edit-form').contains(e.target) && e.target !== document.querySelector('table button')) {
+      setEditing({...editing, status: false});
+      }
+      else return; 
+      
+    
+      
+    })
+
+  }, [])
+
+  useEffect(() => {
+    // document.querySelector('')
     const mostPropsArray = ['name', 'email', 'phone'];
 
     const populateEdit = () => {
@@ -48,6 +74,8 @@ function App() {
   const handleEdit = (e) => {
     const id = e.target.parentElement.parentElement.id;
     setEditing({ ...editing, id, status: !editing.status });
+    // setEditing({ ...editing, status: !editing.status });
+    // console.log('click');
   }
 
   const handleEditSubmit = (e) => {
@@ -95,17 +123,17 @@ function App() {
     document.querySelectorAll('input').forEach(elem => elem.checked ? elem.checked = false : elem.value = '');
     // reset the caption
     document.querySelector('form > span').textContent = '';
-    
 
-    try{
+
+    try {
       const imgUrl = await getImageUrl(rawFormData.photo)
       const newData = { ...rawFormData, photo: imgUrl }
       setSubmitData(submitData => [...submitData, newData]);
     }
-    catch(err) {
-        const newData = { ...rawFormData }
-        setSubmitData(submitData => [...submitData, newData]);
-        console.log('photo not provided tho')
+    catch (err) {
+      const newData = { ...rawFormData }
+      setSubmitData(submitData => [...submitData, newData]);
+      console.log('photo not provided tho')
     }
   }
 
@@ -120,28 +148,38 @@ function App() {
   return (
     <div className="wrapper">
       <Header />
+
+
+      <div className="content">
+      
       {/* change this button to a one liner and use ::after to add the text */}
+        {
+          editing.status && (<div className="modal">
+            <Form handleSubmit={handleEditSubmit} type='edit-form' />
+          </div>)
+        }
       <button className='switch' onClick={switchView}>
         Switch View
       </button>
-      {editing.status && <Form handleSubmit={handleEditSubmit} type='edit-form' />}
-      <div className="content">
-      <Routes>
-        <Route path='/'
-          element={
-            <Form
-              handleSubmit={handleFormSubmit}
-              type='main-form'
-            />}
-        />
-        <Route path='table'
-          element={
-            <Table
-              data={submitData}
-              handleEdit={handleEdit}
-            />}
-        />
-      </Routes>
+
+      
+
+        <Routes>
+          <Route path='/'
+            element={
+              <Form
+                handleSubmit={handleFormSubmit}
+                type='main-form'
+              />}
+          />
+          <Route path='table'
+            element={
+              <Table
+                data={submitData}
+                handleEdit={handleEdit}
+              />}
+          />
+        </Routes>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ const FormInput = ({ name, type }) => {
 				onInput={name === 'phone' ? isKeyNumber : undefined}
 				id={name}
 				onChange={name === 'photo' ? handleImageSelect : null}
-				required={name !== 'hungry'}
+				// required={name !== 'hungry'}
 			/>
 		</label>
 	)
