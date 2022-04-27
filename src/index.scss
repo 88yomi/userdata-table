@@ -25,7 +25,7 @@ body {
 }
 
 .blink {
-  animation: bling 0.5s step-start infinite;
+  animation: bling 0.5s step-start 3;
 }
 
 @mixin form-content {
@@ -103,14 +103,13 @@ body {
     border: 1px solid #ccc;
   }
 
-    @media (min-width: 800px) {
+  @media (min-width: 800px) {
     width: 80%;
   }
 
   @media (max-width: 600px) {
-    padding: 3rem;
+    padding: 3rem 2rem;
   }
-
 }
 
 .wrapper {
@@ -130,7 +129,6 @@ header {
     font-size: 2.5rem;
     text-transform: uppercase;
     color: #4f8073;
-    // color: #595272;
   }
 
   p {
@@ -171,16 +169,19 @@ form > span {
 }
 
 div.modal {
-  background: #354B45;
+  background: #354b45;
+  background: #92adce;
+  background: #98B0A9;
   position: absolute;
   z-index: 100;
   height: 100%;
   width: 100%;
   border-radius: 15px;
+  border-right: 0.2rem solid #f3f;
+  border-left: 0.2rem solid #f3f;
 }
 
 form#edit-form {
-  // position: absolute;
   @include form-content;
 
   top: 0;
@@ -195,11 +196,24 @@ form#edit-form {
   padding-top: 2rem;
 
   label {
-    color: #eee;
+    color: #fff;
 
     &:nth-child(5) {
       color: #444;
     }
+  }
+
+  &::before {
+    content: "Editing...";
+    color: #fff;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    position: absolute;
+    top: 1rem;
+  }
+  @media (max-width: 600px) {
+    padding: 3rem 1rem;
   }
 }
 
@@ -237,6 +251,7 @@ table {
 
   td {
     text-align: center;
+    position: relative;
 
     &:nth-child(5) {
       padding: 5px;
@@ -246,6 +261,17 @@ table {
       object-fit: cover;
       width: 100px;
       height: 100px;
+    }
+    // edit button
+    // & button {
+    //   position: absolute;
+    //   right: -2rem;
+    // }
+    & button {
+      padding: 2px;
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
     }
   }
 

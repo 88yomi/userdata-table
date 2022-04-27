@@ -5,12 +5,8 @@ const Form = ({ handleSubmit, type }) => {
 	const handleNoImageSelected = () => {
 		let file = document.querySelector('input[type=file]');
 
-		// console.log(fix this error message)
 		if (!file.files[0]) {
 			document.querySelector('label:nth-child(5)').classList.add('blink');
-			setTimeout(() => {
-				document.querySelector('label:nth-child(5)').classList.remove('blink');
-			}, 3000);
 		}
 	}
 

@@ -10,7 +10,7 @@ const TableRow = ({ name, email, phone, hungry, photo, id, handleEdit }) => {
 			<td>
 			<img src={photo} alt='user-photo'/>
 			</td>
-			<td><button onClick={handleEdit}>edit</button></td>
+			<td><button onClick={handleEdit} className="edit-button">edit</button></td>
 			
 		</tr>
 	)
